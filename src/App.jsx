@@ -1,28 +1,32 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import HeroCover from './components/HeroCover';
+import FlashcardDeck from './components/FlashcardDeck';
+import QuizMode from './components/QuizMode';
+import Uploader from './components/Uploader';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('kirakira_kanji');
+    if (saved) {
+      try { setData(JSON.parse(saved)); } catch {}
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-pink-50 text-sky-900">
+      <HeroCover />
+      <main className="space-y-8 md:space-y-12">
+        <FlashcardDeck />
+        <QuizMode />
+        <Uploader onData={setData} />
+      </main>
+      <footer className="py-10 text-center text-sm text-sky-700">
+        Made with pastel vibes • KiraKira Kanji ✨
+      </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
